@@ -6,17 +6,10 @@ pub const Q: u32 = 12289;  // Prime modulus
 pub const N: usize = 512;  // Ring dimension
 pub const ROOT_OF_UNITY: u32 = 1479;  // Primitive 1024th root of unity mod Q
 
-// computed twiddle factors for NTT
-// these are powers of the root of unity: ω^i mod Q
-static mut TWIDDLE_FACTORS: Option<[u32; N]> = None;
-
-// computed inverse twiddle factors for inverse NTT
-static mut INV_TWIDDLE_FACTORS: Option<[u32; N]> = None;
-
 // modular inverse of N for inverse NTT
 const INV_N: u32 = 12265; // N^(-1) mod Q
 
-// runtime computation of twiddle factors (moved from const to avoid overflow)
+// compute twiddle factors on-demand
 fn compute_twiddles() -> [u32; N] {
     let mut twiddles = [0u32; N];
     for i in 0..N {
@@ -25,7 +18,7 @@ fn compute_twiddles() -> [u32; N] {
     twiddles
 }
 
-// runtime computation of inverse twiddle factors
+// compute inverse twiddle factors on-demand
 fn compute_inv_twiddles() -> [u32; N] {
     let mut inv_twiddles = [0u32; N];
     for i in 0..N {
@@ -71,31 +64,7 @@ pub fn fast_mod_q(x: u32) -> u32 {
     }
 }
 
-// initialize twiddle factors (call once before using NTT)
-fn ensure_twiddle_factors() {
-    unsafe {
-        if TWIDDLE_FACTORS.is_none() {
-            TWIDDLE_FACTORS = Some(compute_twiddles());
-        }
-        if INV_TWIDDLE_FACTORS.is_none() {
-            INV_TWIDDLE_FACTORS = Some(compute_inv_twiddles());
-        }
-    }
-}
 
-// get twiddle factors safely
-fn get_twiddle_factors() -> &'static [u32; N] {
-    unsafe {
-        TWIDDLE_FACTORS.as_ref().unwrap()
-    }
-}
-
-// get inverse twiddle factors safely
-fn get_inv_twiddle_factors() -> &'static [u32; N] {
-    unsafe {
-        INV_TWIDDLE_FACTORS.as_ref().unwrap()
-    }
-}
 
 // bit-reverse a value for NTT input/output ordering
 #[inline]
@@ -111,8 +80,7 @@ fn bit_reverse(mut x: usize, bits: u32) -> usize {
 // forward NTT transformation
 // it transforms coefficients from time domain to frequency domain
 pub fn ntt_forward(coeffs: &mut [u32; N]) {
-    ensure_twiddle_factors();
-    let twiddle_factors = get_twiddle_factors();
+    let twiddle_factors = compute_twiddles();
     
     // bit-reverse input for decimation-in-frequency NTT
     for i in 0..N {
@@ -145,8 +113,7 @@ pub fn ntt_forward(coeffs: &mut [u32; N]) {
 // inverse NTT transformation
 // this transforms coefficients from frequency domain back to time domain
 pub fn ntt_inverse(coeffs: &mut [u32; N]) {
-    ensure_twiddle_factors();
-    let inv_twiddle_factors = get_inv_twiddle_factors();
+    let inv_twiddle_factors = compute_inv_twiddles();
     
     // inverse NTT
     let mut len = N;

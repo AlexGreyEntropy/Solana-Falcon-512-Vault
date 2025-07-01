@@ -126,7 +126,7 @@ fn test_falcon_verification_edge_cases() {
 }
 
 // performance and compute unit validation
-#[test]
+    #[test]
 fn test_performance_estimates() {
     // estimated compute unit breakdown for Falcon-512 verification
     let performance_breakdown = [

@@ -154,6 +154,7 @@ fn parse_signature_fast(signature: &[u8; FALCON_512_SIGNATURE_SIZE]) -> Result<S
 }
 
 // signature components structure
+#[allow(dead_code)]
 struct SignatureComponents {
     header: u8,
     nonce: [u8; 40],

@@ -1,9 +1,9 @@
 [package]
 name = "solana-falcon-vault"
 description = "Falcon-512 quantum-resistant vault for Solana"
-authors = ["Solana Falcon Vault Contributors"]
+authors = ["AlexGreyEntropy"]
 version = "0.1.0"
-edition = "2021"
+edition = "2024"
 license = "MIT"
 
 [lib]

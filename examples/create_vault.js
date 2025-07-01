@@ -50,10 +50,10 @@ async function createFalconVault(programId, walletPath) {
         const keypairData = JSON.parse(walletData);
         const wallet = Keypair.fromSecretKey(new Uint8Array(keypairData));
         
-        console.log('💳 Wallet:', wallet.publicKey.toString());
+        console.log('Wallet:', wallet.publicKey.toString());
    
         const balance = await connection.getBalance(wallet.publicKey);
-        console.log('💰 Balance:', balance / LAMPORTS_PER_SOL, 'SOL');
+        console.log('Balance:', balance / LAMPORTS_PER_SOL, 'SOL');
         
         if (balance < 0.01 * LAMPORTS_PER_SOL) {
             throw new Error('Insufficient balance for deployment');
@@ -61,7 +61,7 @@ async function createFalconVault(programId, walletPath) {
         
         //generate Falcon-512 public key
         const falconPublicKey = generateFalconPublicKey();
-        console.log('🔑 Generated Falcon-512 public key (897 bytes)');
+        console.log('Generated Falcon-512 public key (897 bytes)');
         
         const publicKeyHash = hashFalconPublicKey(falconPublicKey);
         const [vaultPDA, bump] = PublicKey.findProgramAddressSync(
@@ -121,7 +121,7 @@ async function createFalconVault(programId, walletPath) {
     }
 }
 
-// Usage example
+// example
 if (process.argv.length < 4) {
     console.log('Usage: node create_vault.js <program_id> <wallet_path>');
     console.log('Example: node create_vault.js CZBeesUR63G37oWTcJW4cLMsQrJMpPJkQyAmB373FUrC ~/.config/solana/id.json');

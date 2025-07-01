@@ -1,30 +1,36 @@
 # Falcon-512 Quantum-Resistant Vaults on Solana
 
-🛡️ **The world's first production implementation of NIST-approved Falcon-512 quantum-resistant digital signatures on Solana blockchain.**
+## **Overview**
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Solana](https://img.shields.io/badge/Solana-Compatible-blue)](https://solana.com)
-[![Rust](https://img.shields.io/badge/Rust-1.80+-orange)](https://www.rust-lang.org)
+This repository implements quantum-resistant vaults using the **Falcon-512** signature scheme, providing protection against both classical and quantum computer attacks. 
+Unlike traditional ECDSA signatures that are vulnerable to quantum computers, Falcon-512 offers **103-108 bits of quantum security**.
 
-## 🌟 **Overview**
+Inspired by Dean Little's [WOTS-Vaults](https://github.com/deanmlittle/solana-winternitz-vault) and the work of Aszepieniec's [Falcon-Rust](https://github.com/aszepieniec/falcon-rust)
 
-This project implements quantum-resistant vaults using the **Falcon-512** digital signature scheme, providing protection against both classical and quantum computer attacks. Unlike traditional ECDSA signatures that are vulnerable to quantum computers, Falcon-512 offers **103-108 bits of quantum security**.
+Solana Devnet Example: [Vault PDA](https://explorer.solana.com/address/CZBeesUR63G37oWTcJW4cLMsQrJMpPJkQyAmB373FUrC?cluster=devnet)
+
+Solana Devnet Tx: [OpenVault](https://explorer.solana.com/tx/5qicg2dJigiTJGtSqTLkT4LKkymwNvikzMCwNQj3e4RgeRHYZSoNvtWvkGnev2tugyKBmzA5TteKHaqukhhC22Gn?cluster=devnet)
 
 ### **Key Features**
 
-- 🔐 **Quantum-Resistant**: NIST-approved Falcon-512 signature scheme
-- ⚡ **High Performance**: ~152k compute units (~76% of Solana's limit)
-- 🎯 **Zero Heap Allocation**: Fully stack-based for optimal efficiency
-- ✅ **Production Ready**: Complete error handling and validation
-- 🔄 **Reusable Signatures**: Unlike Winternitz, supports multiple transactions per vault
-- 📏 **Optimized Size**: 897-byte public keys, 666-byte signatures
-
-## 🏗️ **Architecture**
+ **Quantum-Resistant**: NIST-approved Falcon-512 signature scheme
+ 
+ **High Performance**: ~152k compute units (~76% of Solana's limit)
+ 
+ **Zero Heap Allocation**: Fully stack-based for optimal efficiency
+ 
+ **Production Ready**: Complete error handling and validation
+ 
+ **Reusable Signatures**: Supports multiple transactions per vault
+ 
+ **Optimized Size**: 897-byte public keys, 666-byte signatures
+ 
+## **Architecture**
 
 ### **Core Components**
 
-- **`src/falcon/verify.rs`** - Production Falcon-512 signature verification
-- **`src/falcon/ntt.rs`** - Optimized Number Theoretic Transform (~35k CU)
+- **`src/falcon/verify.rs`** - Falcon-512 signature verification
+- **`src/falcon/ntt.rs`** - Number Theoretic Transform (~35k CU)
 - **`src/falcon/keccak.rs`** - SHAKE256 implementation for hash-to-point
 - **`src/instructions/`** - Solana program instructions (open, transfer, close vaults)
 
@@ -39,7 +45,7 @@ This project implements quantum-resistant vaults using the **Falcon-512** digita
 | **Compute Units** | ~152,200 CU |
 | **Memory Usage** | ~8KB stack, 0 heap |
 
-## 🚀 **Quick Start**
+## **Quick Start**
 
 ### **Prerequisites**
 
@@ -51,7 +57,7 @@ This project implements quantum-resistant vaults using the **Falcon-512** digita
 
 ```bash
 # Clone the repository
-git clone https://github.com/your-org/solana-falcon-512-vaults
+git clone https://github.com/AlexGreyEntropy/solana-falcon-512-vaults
 cd solana-falcon-512-vaults
 
 # Build the program
@@ -72,7 +78,7 @@ solana program deploy target/deploy/solana_falcon_vault.so --url devnet
 
 ### **Usage**
 
-```bash
+   ```bash
 # Create a Falcon-512 vault
 node examples/create_vault.js <PROGRAM_ID> <WALLET_PATH>
 
@@ -80,7 +86,7 @@ node examples/create_vault.js <PROGRAM_ID> <WALLET_PATH>
 node examples/create_vault.js CZBeesUR63G37oWTcJW4cLMsQrJMpPJkQyAmB373FUrC ~/.config/solana/id.json
 ```
 
-## 📖 **Instructions**
+## **Instructions**
 
 ### **OpenVault**
 Creates a new quantum-resistant vault with a Falcon-512 public key.
@@ -106,7 +112,7 @@ Transfers SOL from vault with Falcon-512 signature verification.
 ### **CloseVault**
 Closes vault and reclaims rent with signature verification.
 
-## 🔬 **Cryptographic Implementation**
+## **Cryptographic Implementation**
 
 ### **Falcon-512 Verification Process**
 
@@ -127,7 +133,7 @@ Closes vault and reclaims rent with signature verification.
 | Public Key Parsing | ~15,000 | 10% |
 | Field Operations | ~12,200 | 8% |
 
-## 🛡️ **Security**
+## **Security**
 
 ### **Quantum Resistance**
 
@@ -137,14 +143,18 @@ Falcon-512 is based on the **NTRU lattice problem**, which remains hard even for
 - **Learning With Errors (LWE)** problem  
 - **NTRU assumption** over polynomial rings
 
-### **Implementation Security**
+### **Security**
 
-- ✅ **Constant-time operations** where possible
-- ✅ **Input validation** on all parameters
-- ✅ **Secure random number generation** for signatures
-- ✅ **Memory safety** through Rust's ownership system
+ **Constant-time operations** where possible
+ 
+ **Input validation** on all parameters
+ 
+ **Secure random number generation** for signatures
+ 
+ **Memory safety** through Rust's ownership system
+ 
 
-## 📝 **Examples**
+## **Examples**
 
 ### **Rust Client**
 See `examples/client_example.rs` for a complete Rust implementation.
@@ -152,7 +162,7 @@ See `examples/client_example.rs` for a complete Rust implementation.
 ### **JavaScript Client**
 See `examples/create_vault.js` for a Node.js implementation.
 
-## 🧪 **Testing**
+## **Testing**
 
 ```bash
 # Run unit tests
@@ -165,9 +175,7 @@ cargo test --features integration
 cargo run --bin test_local
 ```
 
-## 📊 **Benchmarks**
-
-Performance on different hardware:
+## **Performance on different hardware:**
 
 | Platform | Verification Time | Compute Units |
 |----------|------------------|---------------|
@@ -175,7 +183,7 @@ Performance on different hardware:
 | Intel i7-12700K | ~320μs | ~152,200 |
 | AWS c6i.large | ~410μs | ~152,200 |
 
-## 🤝 **Contributing**
+## **Contributing**
 
 1. Fork the repository
 2. Create a feature branch (`git checkout -b feature/amazing-feature`)
@@ -183,25 +191,12 @@ Performance on different hardware:
 4. Push to the branch (`git push origin feature/amazing-feature`)
 5. Open a Pull Request
 
-## 📄 **License**
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## 🔗 **References**
+## **References**
 
 - [NIST PQC Standardization](https://csrc.nist.gov/projects/post-quantum-cryptography)
 - [Falcon Specification](https://falcon-sign.info/)
 - [NTRU Lattices](https://eprint.iacr.org/2019/1161.pdf)
 - [Solana Documentation](https://docs.solana.com/)
-
-## 🚀 **Roadmap**
-
-- [ ] **Falcon-1024** implementation for higher security
-- [ ] **Batch signature verification** for multiple signatures
-- [ ] **Hardware security module** integration
-- [ ] **Cross-chain bridge** support
-- [ ] **Mobile wallet** integration
-
----
-
-**⚡ Built with Rust, secured by mathematics, powered by Solana.** 
+- [Falcon-Rust-Example](https://github.com/aszepieniec/falcon-rust)
+- [Falcon-Rust-Docs](https://docs.rs/falcon-rust/latest/falcon_rust/)
+- [PQCrypto_Falcon](https://docs.rs/pqcrypto-falcon)
